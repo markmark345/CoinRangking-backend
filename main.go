@@ -4,7 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
+
+func getCoinsName(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Category: %v\n", vars["category"])
+}
 
 func main() {
 
@@ -24,4 +32,7 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		panic(err)
 	}
+
+	r := mux.NewRouter()
+	r.HandleFunc("/coinsName", getCoinsName)
 }
